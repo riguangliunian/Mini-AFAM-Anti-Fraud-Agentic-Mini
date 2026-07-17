@@ -1,0 +1,559 @@
+{
+  "total": 34,
+  "alerts": [
+    {
+      "alert_id": "eval_A00",
+      "seed_user": "g0_u3",
+      "trigger_reason": "Device shared by 8+ users within 24h",
+      "severity": "high",
+      "category": "A_obvious_gang",
+      "difficulty": "easy",
+      "expected_verdict": "fraud_confirmed",
+      "alt_ok_verdicts": [],
+      "expected_confidence_range": [
+        0.75,
+        1.0
+      ],
+      "test_point": "Basic gang detection with obvious device/IP sharing"
+    },
+    {
+      "alert_id": "eval_A01",
+      "seed_user": "g0_u4",
+      "trigger_reason": "Multiple new accounts from same IP + device",
+      "severity": "high",
+      "category": "A_obvious_gang",
+      "difficulty": "easy",
+      "expected_verdict": "fraud_confirmed",
+      "alt_ok_verdicts": [],
+      "expected_confidence_range": [
+        0.75,
+        1.0
+      ],
+      "test_point": "Basic gang detection with obvious device/IP sharing"
+    },
+    {
+      "alert_id": "eval_A02",
+      "seed_user": "g0_u6",
+      "trigger_reason": "Burst of applications from single device fingerprint",
+      "severity": "high",
+      "category": "A_obvious_gang",
+      "difficulty": "easy",
+      "expected_verdict": "fraud_confirmed",
+      "alt_ok_verdicts": [],
+      "expected_confidence_range": [
+        0.75,
+        1.0
+      ],
+      "test_point": "Basic gang detection with obvious device/IP sharing"
+    },
+    {
+      "alert_id": "eval_A03",
+      "seed_user": "g0_u9",
+      "trigger_reason": "Device shared by 8+ users within 24h",
+      "severity": "high",
+      "category": "A_obvious_gang",
+      "difficulty": "easy",
+      "expected_verdict": "fraud_confirmed",
+      "alt_ok_verdicts": [],
+      "expected_confidence_range": [
+        0.75,
+        1.0
+      ],
+      "test_point": "Basic gang detection with obvious device/IP sharing"
+    },
+    {
+      "alert_id": "eval_A04",
+      "seed_user": "g1_u3",
+      "trigger_reason": "Multiple new accounts from same IP + device",
+      "severity": "high",
+      "category": "A_obvious_gang",
+      "difficulty": "easy",
+      "expected_verdict": "fraud_confirmed",
+      "alt_ok_verdicts": [],
+      "expected_confidence_range": [
+        0.75,
+        1.0
+      ],
+      "test_point": "Basic gang detection with obvious device/IP sharing"
+    },
+    {
+      "alert_id": "eval_A05",
+      "seed_user": "g1_u6",
+      "trigger_reason": "Burst of applications from single device fingerprint",
+      "severity": "high",
+      "category": "A_obvious_gang",
+      "difficulty": "easy",
+      "expected_verdict": "fraud_confirmed",
+      "alt_ok_verdicts": [],
+      "expected_confidence_range": [
+        0.75,
+        1.0
+      ],
+      "test_point": "Basic gang detection with obvious device/IP sharing"
+    },
+    {
+      "alert_id": "eval_A06",
+      "seed_user": "g1_u8",
+      "trigger_reason": "Device shared by 8+ users within 24h",
+      "severity": "high",
+      "category": "A_obvious_gang",
+      "difficulty": "easy",
+      "expected_verdict": "fraud_confirmed",
+      "alt_ok_verdicts": [],
+      "expected_confidence_range": [
+        0.75,
+        1.0
+      ],
+      "test_point": "Basic gang detection with obvious device/IP sharing"
+    },
+    {
+      "alert_id": "eval_A07",
+      "seed_user": "g2_u2",
+      "trigger_reason": "Multiple new accounts from same IP + device",
+      "severity": "high",
+      "category": "A_obvious_gang",
+      "difficulty": "easy",
+      "expected_verdict": "fraud_confirmed",
+      "alt_ok_verdicts": [],
+      "expected_confidence_range": [
+        0.75,
+        1.0
+      ],
+      "test_point": "Basic gang detection with obvious device/IP sharing"
+    },
+    {
+      "alert_id": "eval_B00",
+      "seed_user": "g3_u2",
+      "trigger_reason": "Contact overlap detected among small user group",
+      "severity": "medium",
+      "category": "B_subtle_immature",
+      "difficulty": "hard",
+      "expected_verdict": "fraud_confirmed",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.4,
+        0.75
+      ],
+      "test_point": "Label-maturity guard: subtle gang with immature labels — expect either downgraded confidence or escalate"
+    },
+    {
+      "alert_id": "eval_B01",
+      "seed_user": "g3_u5",
+      "trigger_reason": "Contact overlap detected among small user group",
+      "severity": "medium",
+      "category": "B_subtle_immature",
+      "difficulty": "hard",
+      "expected_verdict": "fraud_confirmed",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.4,
+        0.75
+      ],
+      "test_point": "Label-maturity guard: subtle gang with immature labels — expect either downgraded confidence or escalate"
+    },
+    {
+      "alert_id": "eval_B02",
+      "seed_user": "g4_u0",
+      "trigger_reason": "Contact overlap detected among small user group",
+      "severity": "medium",
+      "category": "B_subtle_immature",
+      "difficulty": "hard",
+      "expected_verdict": "fraud_confirmed",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.4,
+        0.75
+      ],
+      "test_point": "Label-maturity guard: subtle gang with immature labels — expect either downgraded confidence or escalate"
+    },
+    {
+      "alert_id": "eval_B03",
+      "seed_user": "g3_u0",
+      "trigger_reason": "Contact overlap detected among small user group",
+      "severity": "medium",
+      "category": "B_subtle_immature",
+      "difficulty": "hard",
+      "expected_verdict": "fraud_confirmed",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.4,
+        0.75
+      ],
+      "test_point": "Label-maturity guard: subtle gang with immature labels — expect either downgraded confidence or escalate"
+    },
+    {
+      "alert_id": "eval_B04",
+      "seed_user": "g4_u1",
+      "trigger_reason": "Contact overlap detected among small user group",
+      "severity": "medium",
+      "category": "B_subtle_immature",
+      "difficulty": "hard",
+      "expected_verdict": "fraud_confirmed",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.4,
+        0.75
+      ],
+      "test_point": "Label-maturity guard: subtle gang with immature labels — expect either downgraded confidence or escalate"
+    },
+    {
+      "alert_id": "eval_B05",
+      "seed_user": "g3_u1",
+      "trigger_reason": "Contact overlap detected among small user group",
+      "severity": "medium",
+      "category": "B_subtle_immature",
+      "difficulty": "hard",
+      "expected_verdict": "fraud_confirmed",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.4,
+        0.75
+      ],
+      "test_point": "Label-maturity guard: subtle gang with immature labels — expect either downgraded confidence or escalate"
+    },
+    {
+      "alert_id": "eval_C00",
+      "seed_user": "nb0_u2",
+      "trigger_reason": "IP shared by 8+ users flagged by rule engine",
+      "severity": "medium",
+      "category": "C_wifi_false_positive",
+      "difficulty": "medium",
+      "expected_verdict": "not_fraud",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.5,
+        1.0
+      ],
+      "test_point": "Structure-only rule guard: shared IP but mature accounts, high age — should NOT be flagged as fraud"
+    },
+    {
+      "alert_id": "eval_C01",
+      "seed_user": "nb0_u0",
+      "trigger_reason": "IP shared by 8+ users flagged by rule engine",
+      "severity": "medium",
+      "category": "C_wifi_false_positive",
+      "difficulty": "medium",
+      "expected_verdict": "not_fraud",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.5,
+        1.0
+      ],
+      "test_point": "Structure-only rule guard: shared IP but mature accounts, high age — should NOT be flagged as fraud"
+    },
+    {
+      "alert_id": "eval_C02",
+      "seed_user": "nb1_u1",
+      "trigger_reason": "IP shared by 8+ users flagged by rule engine",
+      "severity": "medium",
+      "category": "C_wifi_false_positive",
+      "difficulty": "medium",
+      "expected_verdict": "not_fraud",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.5,
+        1.0
+      ],
+      "test_point": "Structure-only rule guard: shared IP but mature accounts, high age — should NOT be flagged as fraud"
+    },
+    {
+      "alert_id": "eval_C03",
+      "seed_user": "nb0_u6",
+      "trigger_reason": "IP shared by 8+ users flagged by rule engine",
+      "severity": "medium",
+      "category": "C_wifi_false_positive",
+      "difficulty": "medium",
+      "expected_verdict": "not_fraud",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.5,
+        1.0
+      ],
+      "test_point": "Structure-only rule guard: shared IP but mature accounts, high age — should NOT be flagged as fraud"
+    },
+    {
+      "alert_id": "eval_C04",
+      "seed_user": "nb1_u6",
+      "trigger_reason": "IP shared by 8+ users flagged by rule engine",
+      "severity": "medium",
+      "category": "C_wifi_false_positive",
+      "difficulty": "medium",
+      "expected_verdict": "not_fraud",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.5,
+        1.0
+      ],
+      "test_point": "Structure-only rule guard: shared IP but mature accounts, high age — should NOT be flagged as fraud"
+    },
+    {
+      "alert_id": "eval_C05",
+      "seed_user": "nb1_u7",
+      "trigger_reason": "IP shared by 8+ users flagged by rule engine",
+      "severity": "medium",
+      "category": "C_wifi_false_positive",
+      "difficulty": "medium",
+      "expected_verdict": "not_fraud",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.5,
+        1.0
+      ],
+      "test_point": "Structure-only rule guard: shared IP but mature accounts, high age — should NOT be flagged as fraud"
+    },
+    {
+      "alert_id": "eval_D00",
+      "seed_user": "n_u72",
+      "trigger_reason": "Anomaly detector flagged high-amount application",
+      "severity": "low",
+      "category": "D_isolated_normal",
+      "difficulty": "easy",
+      "expected_verdict": "not_fraud",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.5,
+        1.0
+      ],
+      "test_point": "Isolated normal user: 1-hop expand returns nothing suspicious"
+    },
+    {
+      "alert_id": "eval_D01",
+      "seed_user": "n_u79",
+      "trigger_reason": "Anomaly detector flagged high-amount application",
+      "severity": "low",
+      "category": "D_isolated_normal",
+      "difficulty": "easy",
+      "expected_verdict": "not_fraud",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.5,
+        1.0
+      ],
+      "test_point": "Isolated normal user: 1-hop expand returns nothing suspicious"
+    },
+    {
+      "alert_id": "eval_D02",
+      "seed_user": "n_u94",
+      "trigger_reason": "Anomaly detector flagged high-amount application",
+      "severity": "low",
+      "category": "D_isolated_normal",
+      "difficulty": "easy",
+      "expected_verdict": "not_fraud",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.5,
+        1.0
+      ],
+      "test_point": "Isolated normal user: 1-hop expand returns nothing suspicious"
+    },
+    {
+      "alert_id": "eval_D03",
+      "seed_user": "n_u96",
+      "trigger_reason": "Anomaly detector flagged high-amount application",
+      "severity": "low",
+      "category": "D_isolated_normal",
+      "difficulty": "easy",
+      "expected_verdict": "not_fraud",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.5,
+        1.0
+      ],
+      "test_point": "Isolated normal user: 1-hop expand returns nothing suspicious"
+    },
+    {
+      "alert_id": "eval_D04",
+      "seed_user": "n_u120",
+      "trigger_reason": "Anomaly detector flagged high-amount application",
+      "severity": "low",
+      "category": "D_isolated_normal",
+      "difficulty": "easy",
+      "expected_verdict": "not_fraud",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.5,
+        1.0
+      ],
+      "test_point": "Isolated normal user: 1-hop expand returns nothing suspicious"
+    },
+    {
+      "alert_id": "eval_D05",
+      "seed_user": "n_u143",
+      "trigger_reason": "Anomaly detector flagged high-amount application",
+      "severity": "low",
+      "category": "D_isolated_normal",
+      "difficulty": "easy",
+      "expected_verdict": "not_fraud",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.5,
+        1.0
+      ],
+      "test_point": "Isolated normal user: 1-hop expand returns nothing suspicious"
+    },
+    {
+      "alert_id": "eval_E00",
+      "seed_user": "g3_u2",
+      "trigger_reason": "Cross-border payment velocity anomaly in unprecedented geographic cluster",
+      "severity": "high",
+      "category": "E_novel_pattern",
+      "difficulty": "hard",
+      "expected_verdict": "escalate",
+      "alt_ok_verdicts": [],
+      "expected_confidence_range": [
+        0.0,
+        0.5
+      ],
+      "test_point": "Retrieval-confidence guard: novel trigger phrasing should escalate rather than auto-confirm"
+    },
+    {
+      "alert_id": "eval_E01",
+      "seed_user": "g3_u5",
+      "trigger_reason": "Cross-border payment velocity anomaly in unprecedented geographic cluster",
+      "severity": "high",
+      "category": "E_novel_pattern",
+      "difficulty": "hard",
+      "expected_verdict": "escalate",
+      "alt_ok_verdicts": [],
+      "expected_confidence_range": [
+        0.0,
+        0.5
+      ],
+      "test_point": "Retrieval-confidence guard: novel trigger phrasing should escalate rather than auto-confirm"
+    },
+    {
+      "alert_id": "eval_E02",
+      "seed_user": "g4_u0",
+      "trigger_reason": "Cross-border payment velocity anomaly in unprecedented geographic cluster",
+      "severity": "high",
+      "category": "E_novel_pattern",
+      "difficulty": "hard",
+      "expected_verdict": "escalate",
+      "alt_ok_verdicts": [],
+      "expected_confidence_range": [
+        0.0,
+        0.5
+      ],
+      "test_point": "Retrieval-confidence guard: novel trigger phrasing should escalate rather than auto-confirm"
+    },
+    {
+      "alert_id": "eval_E03",
+      "seed_user": "g3_u0",
+      "trigger_reason": "Cross-border payment velocity anomaly in unprecedented geographic cluster",
+      "severity": "high",
+      "category": "E_novel_pattern",
+      "difficulty": "hard",
+      "expected_verdict": "escalate",
+      "alt_ok_verdicts": [],
+      "expected_confidence_range": [
+        0.0,
+        0.5
+      ],
+      "test_point": "Retrieval-confidence guard: novel trigger phrasing should escalate rather than auto-confirm"
+    },
+    {
+      "alert_id": "eval_F00",
+      "seed_user": "g1_u3",
+      "trigger_reason": "Device shared + suspicious behavior spike",
+      "severity": "high",
+      "category": "F_rule_robustness",
+      "difficulty": "medium",
+      "expected_verdict": "fraud_confirmed",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.6,
+        1.0
+      ],
+      "test_point": "Adversarial-prober should verify multi-condition rule; single-condition rules should be rejected"
+    },
+    {
+      "alert_id": "eval_F01",
+      "seed_user": "g1_u6",
+      "trigger_reason": "Device shared + suspicious behavior spike",
+      "severity": "high",
+      "category": "F_rule_robustness",
+      "difficulty": "medium",
+      "expected_verdict": "fraud_confirmed",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.6,
+        1.0
+      ],
+      "test_point": "Adversarial-prober should verify multi-condition rule; single-condition rules should be rejected"
+    },
+    {
+      "alert_id": "eval_F02",
+      "seed_user": "g1_u8",
+      "trigger_reason": "Device shared + suspicious behavior spike",
+      "severity": "high",
+      "category": "F_rule_robustness",
+      "difficulty": "medium",
+      "expected_verdict": "fraud_confirmed",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.6,
+        1.0
+      ],
+      "test_point": "Adversarial-prober should verify multi-condition rule; single-condition rules should be rejected"
+    },
+    {
+      "alert_id": "eval_F03",
+      "seed_user": "g2_u2",
+      "trigger_reason": "Device shared + suspicious behavior spike",
+      "severity": "high",
+      "category": "F_rule_robustness",
+      "difficulty": "medium",
+      "expected_verdict": "fraud_confirmed",
+      "alt_ok_verdicts": [
+        "escalate"
+      ],
+      "expected_confidence_range": [
+        0.6,
+        1.0
+      ],
+      "test_point": "Adversarial-prober should verify multi-condition rule; single-condition rules should be rejected"
+    }
+  ]
+}
