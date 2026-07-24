@@ -1,0 +1,124 @@
+{
+  "events": [
+    {
+      "event_id": "refresh_feature_01", "model_version": "gnn_v12", "root_cause": "feature_drift",
+      "trigger_reason": "Recall dropped after bot behavior moved from night to daytime low-frequency operation.",
+      "baseline_metrics": {"pr_auc": 0.44, "recall_at_fpr": 0.68, "amount_recall": 0.73, "fp_rate": 0.001},
+      "current_metrics": {"pr_auc": 0.34, "recall_at_fpr": 0.53, "amount_recall": 0.59, "fp_rate": 0.0011},
+      "drift_signals": {"node_feature_psi": 0.31, "edge_type_psi": 0.07, "degree_shift": 0.05, "embedding_mmd": 0.09, "missing_rate_change": 0.01, "label_maturity_drop": 0.02},
+      "segment_degradation": {"daytime": -0.22, "night": -0.02}, "label_context": {"positive_label_maturity": 0.78, "negative_label_maturity": 0.81},
+      "best_intervention": "adjust_training_window", "targeted_gain": 0.12, "generic_gain": 0.006, "targeted_fp_delta": 0.0001,
+      "findings": {"analyze_segment_performance": {"cause": "feature_drift", "confidence": 0.72, "worst_segment": "daytime"}, "analyze_feature_drift": {"cause": "feature_drift", "confidence": 0.94, "top_features": ["hour", "input_speed"]}}
+    },
+    {
+      "event_id": "refresh_feature_02", "model_version": "gnn_v18", "root_cause": "feature_drift",
+      "trigger_reason": "Account takeover behavior shifted toward older accounts and slower interaction patterns.",
+      "baseline_metrics": {"pr_auc": 0.46, "recall_at_fpr": 0.70, "amount_recall": 0.75, "fp_rate": 0.0012},
+      "current_metrics": {"pr_auc": 0.35, "recall_at_fpr": 0.55, "amount_recall": 0.60, "fp_rate": 0.0013},
+      "drift_signals": {"node_feature_psi": 0.27, "edge_type_psi": 0.06, "degree_shift": 0.08, "embedding_mmd": 0.10, "missing_rate_change": 0.02, "label_maturity_drop": 0.03},
+      "segment_degradation": {"old_accounts": -0.19}, "label_context": {"positive_label_maturity": 0.74, "negative_label_maturity": 0.79},
+      "best_intervention": "adjust_training_window", "targeted_gain": 0.11, "generic_gain": 0.005, "targeted_fp_delta": 0.0001,
+      "findings": {"analyze_segment_performance": {"cause": "feature_drift", "confidence": 0.70, "worst_segment": "old_accounts"}, "analyze_feature_drift": {"cause": "feature_drift", "confidence": 0.91, "top_features": ["account_age", "input_speed"]}}
+    },
+    {
+      "event_id": "refresh_graph_01", "model_version": "gnn_v13", "root_cause": "graph_drift",
+      "trigger_reason": "Fraud rings stopped sharing devices and converged through two-hop payee accounts.",
+      "baseline_metrics": {"pr_auc": 0.43, "recall_at_fpr": 0.67, "amount_recall": 0.72, "fp_rate": 0.001},
+      "current_metrics": {"pr_auc": 0.32, "recall_at_fpr": 0.49, "amount_recall": 0.53, "fp_rate": 0.0011},
+      "drift_signals": {"node_feature_psi": 0.08, "edge_type_psi": 0.29, "degree_shift": 0.24, "embedding_mmd": 0.22, "missing_rate_change": 0.01, "label_maturity_drop": 0.02},
+      "segment_degradation": {"old_accounts": -0.18}, "label_context": {"positive_label_maturity": 0.77, "negative_label_maturity": 0.80},
+      "best_intervention": "add_graph_relation_features", "targeted_gain": 0.15, "generic_gain": 0.004, "targeted_fp_delta": 0.0002,
+      "findings": {"analyze_segment_performance": {"cause": "graph_drift", "confidence": 0.68}, "analyze_graph_drift": {"cause": "graph_drift", "confidence": 0.95, "new_relation": "two_hop_payee"}, "inspect_false_negative_clusters": {"cause": "graph_drift", "confidence": 0.93}}
+    },
+    {
+      "event_id": "refresh_graph_02", "model_version": "gnn_v19", "root_cause": "graph_drift",
+      "trigger_reason": "Dense device stars fragmented into sparse IP-payment communities.",
+      "baseline_metrics": {"pr_auc": 0.45, "recall_at_fpr": 0.69, "amount_recall": 0.74, "fp_rate": 0.0011},
+      "current_metrics": {"pr_auc": 0.34, "recall_at_fpr": 0.51, "amount_recall": 0.56, "fp_rate": 0.0012},
+      "drift_signals": {"node_feature_psi": 0.09, "edge_type_psi": 0.25, "degree_shift": 0.28, "embedding_mmd": 0.20, "missing_rate_change": 0.01, "label_maturity_drop": 0.01},
+      "segment_degradation": {"channel_b": -0.20}, "label_context": {"positive_label_maturity": 0.81, "negative_label_maturity": 0.82},
+      "best_intervention": "add_graph_relation_features", "targeted_gain": 0.14, "generic_gain": 0.005, "targeted_fp_delta": 0.0002,
+      "findings": {"analyze_segment_performance": {"cause": "graph_drift", "confidence": 0.66}, "analyze_graph_drift": {"cause": "graph_drift", "confidence": 0.92, "new_relation": "ip_payment_community"}, "inspect_false_negative_clusters": {"cause": "graph_drift", "confidence": 0.90}}
+    },
+    {
+      "event_id": "refresh_label_01", "model_version": "gnn_v14", "root_cause": "label_delay",
+      "trigger_reason": "Recent negative cohort is not mature enough after a shortened chargeback window.",
+      "baseline_metrics": {"pr_auc": 0.42, "recall_at_fpr": 0.66, "amount_recall": 0.70, "fp_rate": 0.001},
+      "current_metrics": {"pr_auc": 0.35, "recall_at_fpr": 0.56, "amount_recall": 0.60, "fp_rate": 0.0012},
+      "drift_signals": {"node_feature_psi": 0.07, "edge_type_psi": 0.06, "degree_shift": 0.05, "embedding_mmd": 0.08, "missing_rate_change": 0.01, "label_maturity_drop": 0.36},
+      "segment_degradation": {"recent_cohort": -0.16}, "label_context": {"positive_label_maturity": 0.34, "negative_label_maturity": 0.28},
+      "best_intervention": "reweight_mature_samples", "targeted_gain": 0.09, "generic_gain": 0.001, "targeted_fp_delta": 0.0001,
+      "findings": {"analyze_segment_performance": {"cause": "label_delay", "confidence": 0.64}, "analyze_label_maturity": {"cause": "label_delay", "confidence": 0.96, "required_wait_days": 23}}
+    },
+    {
+      "event_id": "refresh_label_02", "model_version": "gnn_v20", "root_cause": "label_delay",
+      "trigger_reason": "Apparent precision decline coincides with unresolved manual-review labels.",
+      "baseline_metrics": {"pr_auc": 0.44, "recall_at_fpr": 0.68, "amount_recall": 0.71, "fp_rate": 0.0011},
+      "current_metrics": {"pr_auc": 0.36, "recall_at_fpr": 0.57, "amount_recall": 0.62, "fp_rate": 0.0013},
+      "drift_signals": {"node_feature_psi": 0.08, "edge_type_psi": 0.07, "degree_shift": 0.06, "embedding_mmd": 0.09, "missing_rate_change": 0.02, "label_maturity_drop": 0.31},
+      "segment_degradation": {"manual_review": -0.17}, "label_context": {"positive_label_maturity": 0.39, "negative_label_maturity": 0.33},
+      "best_intervention": "reweight_mature_samples", "targeted_gain": 0.085, "generic_gain": 0.002, "targeted_fp_delta": 0.0001,
+      "findings": {"analyze_segment_performance": {"cause": "label_delay", "confidence": 0.61}, "analyze_label_maturity": {"cause": "label_delay", "confidence": 0.94, "pending_review_ratio": 0.42}}
+    },
+    {
+      "event_id": "refresh_pipeline_01", "model_version": "gnn_v15", "root_cause": "pipeline_failure",
+      "trigger_reason": "Device risk features became mostly missing after an upstream schema rollout.",
+      "baseline_metrics": {"pr_auc": 0.45, "recall_at_fpr": 0.70, "amount_recall": 0.74, "fp_rate": 0.001},
+      "current_metrics": {"pr_auc": 0.27, "recall_at_fpr": 0.42, "amount_recall": 0.47, "fp_rate": 0.0018},
+      "drift_signals": {"node_feature_psi": 0.34, "edge_type_psi": 0.09, "degree_shift": 0.07, "embedding_mmd": 0.13, "missing_rate_change": 0.41, "label_maturity_drop": 0.02},
+      "segment_degradation": {"android": -0.31}, "label_context": {"positive_label_maturity": 0.76, "negative_label_maturity": 0.80},
+      "best_intervention": "repair_data_pipeline", "targeted_gain": 0.25, "generic_gain": 0.0, "targeted_fp_delta": -0.0005,
+      "findings": {"analyze_segment_performance": {"cause": "pipeline_failure", "confidence": 0.78, "worst_segment": "android"}, "analyze_feature_drift": {"cause": "pipeline_failure", "confidence": 0.99, "broken_feature_family": "device_risk"}}
+    },
+    {
+      "event_id": "refresh_pipeline_02", "model_version": "gnn_v21", "root_cause": "pipeline_failure",
+      "trigger_reason": "IP relation counts collapsed immediately after a graph ETL change.",
+      "baseline_metrics": {"pr_auc": 0.43, "recall_at_fpr": 0.67, "amount_recall": 0.72, "fp_rate": 0.0011},
+      "current_metrics": {"pr_auc": 0.26, "recall_at_fpr": 0.40, "amount_recall": 0.45, "fp_rate": 0.0017},
+      "drift_signals": {"node_feature_psi": 0.29, "edge_type_psi": 0.16, "degree_shift": 0.12, "embedding_mmd": 0.14, "missing_rate_change": 0.38, "label_maturity_drop": 0.01},
+      "segment_degradation": {"all": -0.27}, "label_context": {"positive_label_maturity": 0.79, "negative_label_maturity": 0.82},
+      "best_intervention": "repair_data_pipeline", "targeted_gain": 0.24, "generic_gain": 0.0, "targeted_fp_delta": -0.0004,
+      "findings": {"analyze_segment_performance": {"cause": "pipeline_failure", "confidence": 0.75}, "analyze_feature_drift": {"cause": "pipeline_failure", "confidence": 0.98, "broken_feature_family": "ip_relation_count"}}
+    },
+    {
+      "event_id": "refresh_segment_01", "model_version": "gnn_v16", "root_cause": "segment_shift",
+      "trigger_reason": "False positives rose in legitimate corporate shared-network users.",
+      "baseline_metrics": {"pr_auc": 0.42, "recall_at_fpr": 0.65, "amount_recall": 0.69, "fp_rate": 0.001},
+      "current_metrics": {"pr_auc": 0.35, "recall_at_fpr": 0.56, "amount_recall": 0.62, "fp_rate": 0.0038},
+      "drift_signals": {"node_feature_psi": 0.12, "edge_type_psi": 0.10, "degree_shift": 0.11, "embedding_mmd": 0.12, "missing_rate_change": 0.01, "label_maturity_drop": 0.02},
+      "segment_degradation": {"corporate_network": -0.29}, "label_context": {"positive_label_maturity": 0.80, "negative_label_maturity": 0.84},
+      "best_intervention": "mine_hard_negatives", "targeted_gain": 0.08, "generic_gain": 0.004, "targeted_fp_delta": -0.0014,
+      "findings": {"analyze_segment_performance": {"cause": "segment_shift", "confidence": 0.88, "worst_segment": "corporate_network"}, "inspect_false_positive_clusters": {"cause": "segment_shift", "confidence": 0.95, "cluster": "shared_enterprise_ip"}}
+    },
+    {
+      "event_id": "refresh_segment_02", "model_version": "gnn_v22", "root_cause": "segment_shift",
+      "trigger_reason": "A new merchant channel introduced normal dense account-device graphs.",
+      "baseline_metrics": {"pr_auc": 0.44, "recall_at_fpr": 0.68, "amount_recall": 0.72, "fp_rate": 0.0011},
+      "current_metrics": {"pr_auc": 0.37, "recall_at_fpr": 0.59, "amount_recall": 0.64, "fp_rate": 0.0036},
+      "drift_signals": {"node_feature_psi": 0.13, "edge_type_psi": 0.11, "degree_shift": 0.12, "embedding_mmd": 0.13, "missing_rate_change": 0.01, "label_maturity_drop": 0.02},
+      "segment_degradation": {"merchant_channel_z": -0.27}, "label_context": {"positive_label_maturity": 0.78, "negative_label_maturity": 0.83},
+      "best_intervention": "mine_hard_negatives", "targeted_gain": 0.075, "generic_gain": 0.003, "targeted_fp_delta": -0.0013,
+      "findings": {"analyze_segment_performance": {"cause": "segment_shift", "confidence": 0.86, "worst_segment": "merchant_channel_z"}, "inspect_false_positive_clusters": {"cause": "segment_shift", "confidence": 0.93, "cluster": "legitimate_dense_graph"}}
+    },
+    {
+      "event_id": "refresh_novel_01", "model_version": "gnn_v17", "root_cause": "novel_attack",
+      "trigger_reason": "A new mule network uses sparse accounts linked through rotating payees.",
+      "baseline_metrics": {"pr_auc": 0.43, "recall_at_fpr": 0.66, "amount_recall": 0.71, "fp_rate": 0.001},
+      "current_metrics": {"pr_auc": 0.30, "recall_at_fpr": 0.45, "amount_recall": 0.48, "fp_rate": 0.0012},
+      "drift_signals": {"node_feature_psi": 0.11, "edge_type_psi": 0.21, "degree_shift": 0.19, "embedding_mmd": 0.33, "missing_rate_change": 0.01, "label_maturity_drop": 0.04},
+      "segment_degradation": {"unknown_cluster_7": -0.31}, "label_context": {"positive_label_maturity": 0.67, "negative_label_maturity": 0.74},
+      "best_intervention": "add_graph_relation_features", "targeted_gain": 0.17, "generic_gain": 0.003, "targeted_fp_delta": 0.0002,
+      "findings": {"analyze_segment_performance": {"cause": "novel_attack", "confidence": 0.69}, "analyze_graph_drift": {"cause": "novel_attack", "confidence": 0.87, "novelty": 0.82}, "inspect_false_negative_clusters": {"cause": "novel_attack", "confidence": 0.96, "pattern": "rotating_payee_mules"}}
+    },
+    {
+      "event_id": "refresh_novel_02", "model_version": "gnn_v23", "root_cause": "novel_attack",
+      "trigger_reason": "Deepfake-assisted applications form a previously unseen temporal-device motif.",
+      "baseline_metrics": {"pr_auc": 0.45, "recall_at_fpr": 0.69, "amount_recall": 0.73, "fp_rate": 0.0011},
+      "current_metrics": {"pr_auc": 0.31, "recall_at_fpr": 0.46, "amount_recall": 0.50, "fp_rate": 0.0013},
+      "drift_signals": {"node_feature_psi": 0.14, "edge_type_psi": 0.20, "degree_shift": 0.18, "embedding_mmd": 0.35, "missing_rate_change": 0.02, "label_maturity_drop": 0.05},
+      "segment_degradation": {"unknown_cluster_9": -0.32}, "label_context": {"positive_label_maturity": 0.64, "negative_label_maturity": 0.72},
+      "best_intervention": "add_graph_relation_features", "targeted_gain": 0.18, "generic_gain": 0.003, "targeted_fp_delta": 0.0002,
+      "findings": {"analyze_segment_performance": {"cause": "novel_attack", "confidence": 0.68}, "analyze_graph_drift": {"cause": "novel_attack", "confidence": 0.89, "novelty": 0.85}, "inspect_false_negative_clusters": {"cause": "novel_attack", "confidence": 0.97, "pattern": "deepfake_temporal_device"}}
+    }
+  ]
+}

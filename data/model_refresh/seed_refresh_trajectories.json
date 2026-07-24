@@ -1,0 +1,10 @@
+{
+  "trajectories": [
+    {"event_id": "seed_feature", "label": "accepted", "refresh_success": true, "diagnosed_cause": "feature_drift", "recommendation": "shadow_deploy", "drift_fingerprint": {"node_feature_psi": 0.30, "edge_type_psi": 0.06, "degree_shift": 0.05, "embedding_mmd": 0.08, "missing_rate_change": 0.01, "label_maturity_drop": 0.02}},
+    {"event_id": "seed_graph", "label": "accepted", "refresh_success": true, "diagnosed_cause": "graph_drift", "recommendation": "shadow_deploy", "drift_fingerprint": {"node_feature_psi": 0.08, "edge_type_psi": 0.28, "degree_shift": 0.25, "embedding_mmd": 0.22, "missing_rate_change": 0.01, "label_maturity_drop": 0.02}},
+    {"event_id": "seed_label", "label": "accepted", "refresh_success": true, "diagnosed_cause": "label_delay", "recommendation": "shadow_deploy", "drift_fingerprint": {"node_feature_psi": 0.07, "edge_type_psi": 0.06, "degree_shift": 0.05, "embedding_mmd": 0.08, "missing_rate_change": 0.01, "label_maturity_drop": 0.34}},
+    {"event_id": "seed_pipeline", "label": "accepted", "refresh_success": true, "diagnosed_cause": "pipeline_failure", "recommendation": "shadow_deploy", "drift_fingerprint": {"node_feature_psi": 0.32, "edge_type_psi": 0.09, "degree_shift": 0.07, "embedding_mmd": 0.13, "missing_rate_change": 0.40, "label_maturity_drop": 0.02}},
+    {"event_id": "seed_segment", "label": "accepted", "refresh_success": true, "diagnosed_cause": "segment_shift", "recommendation": "shadow_deploy", "drift_fingerprint": {"node_feature_psi": 0.12, "edge_type_psi": 0.10, "degree_shift": 0.11, "embedding_mmd": 0.12, "missing_rate_change": 0.01, "label_maturity_drop": 0.02}},
+    {"event_id": "seed_novel", "label": "accepted", "refresh_success": true, "diagnosed_cause": "novel_attack", "recommendation": "shadow_deploy", "drift_fingerprint": {"node_feature_psi": 0.12, "edge_type_psi": 0.21, "degree_shift": 0.19, "embedding_mmd": 0.34, "missing_rate_change": 0.01, "label_maturity_drop": 0.04}}
+  ]
+}

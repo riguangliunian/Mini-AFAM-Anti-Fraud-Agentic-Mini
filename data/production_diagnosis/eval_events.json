@@ -1,0 +1,773 @@
+{
+  "events": [
+    {
+      "alert_id": "diag_data_01",
+      "category": "A_DataIntegrity",
+      "difficulty": "easy",
+      "model_name": "fraud_ranker",
+      "model_version": "v32",
+      "root_cause": "data_quality_issue",
+      "expected_repair": "feature_patch",
+      "trigger_reason": "Recall dropped after a device feature schema rollout.",
+      "metric_drop": {"recall_at_fpr": -0.18, "precision": -0.06, "amount_recall": -0.16},
+      "affected_segments": {"android": -0.25, "ios": -0.02},
+      "monitor_alert": {"missing_rate_spike": 0.42, "psi_max": 0.34, "shap_shift": 0.18, "behavior_shift": 0.05, "graph_shift": 0.04, "rule_hit_delta": 0.02, "calibration_shift": 0.03, "traffic_shift": 0.04, "label_maturity": 0.82, "label_maturity_gap": 0.02},
+      "expected_gain": 0.17,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "data_quality_issue", "confidence": 0.72, "severity": "high", "summary": "Drop concentrated in android traffic after schema rollout."},
+        "run_sql_profile": {"cause": "data_quality_issue", "confidence": 0.86, "severity": "high", "summary": "Device feature join volume fell by 39%."},
+        "check_data_quality": {"cause": "data_quality_issue", "confidence": 0.97, "severity": "critical", "summary": "device_risk_score missing rate increased from 2% to 44%."}
+      }
+    },
+    {
+      "alert_id": "diag_data_02",
+      "category": "A_DataIntegrity",
+      "difficulty": "medium",
+      "model_name": "fraud_ranker",
+      "model_version": "v33",
+      "root_cause": "data_quality_issue",
+      "expected_repair": "feature_patch",
+      "trigger_reason": "IP intelligence fields became stale after an upstream delay.",
+      "metric_drop": {"recall_at_fpr": -0.16, "precision": -0.05, "amount_recall": -0.14},
+      "affected_segments": {"channel_b": -0.22},
+      "monitor_alert": {"missing_rate_spike": 0.31, "psi_max": 0.29, "shap_shift": 0.14, "behavior_shift": 0.03, "graph_shift": 0.04, "rule_hit_delta": 0.01, "calibration_shift": 0.02, "traffic_shift": 0.05, "label_maturity": 0.80, "label_maturity_gap": 0.03},
+      "expected_gain": 0.14,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "data_quality_issue", "confidence": 0.70, "severity": "high", "summary": "Drop isolated to channel_b where IP features are heavily used."},
+        "run_sql_profile": {"cause": "data_quality_issue", "confidence": 0.82, "severity": "high", "summary": "IP risk snapshot lagged production by 18 hours."},
+        "check_data_quality": {"cause": "data_quality_issue", "confidence": 0.95, "severity": "critical", "summary": "ip_reputation_age exceeded SLA for 62% of rows."}
+      }
+    },
+    {
+      "alert_id": "diag_feature_01",
+      "category": "B_DistributionShift",
+      "difficulty": "medium",
+      "model_name": "fraud_ranker",
+      "model_version": "v34",
+      "root_cause": "feature_distribution_drift",
+      "expected_repair": "partial_retraining",
+      "trigger_reason": "User behavior shifted from night bursts to daytime low frequency sessions.",
+      "metric_drop": {"recall_at_fpr": -0.13, "precision": -0.04, "amount_recall": -0.12},
+      "affected_segments": {"daytime": -0.20},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.31, "shap_shift": 0.23, "behavior_shift": 0.08, "graph_shift": 0.05, "rule_hit_delta": 0.02, "calibration_shift": 0.04, "traffic_shift": 0.06, "label_maturity": 0.78, "label_maturity_gap": 0.02},
+      "expected_gain": 0.11,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "feature_distribution_drift", "confidence": 0.68, "severity": "medium", "summary": "Daytime traffic accounts for most recall loss."},
+        "compute_feature_psi": {"cause": "feature_distribution_drift", "confidence": 0.94, "severity": "high", "summary": "input_speed and session_hour PSI exceed 0.25."},
+        "analyze_shap_shift": {"cause": "feature_distribution_drift", "confidence": 0.88, "severity": "high", "summary": "Attribution moved away from historical night_apply features."}
+      }
+    },
+    {
+      "alert_id": "diag_feature_02",
+      "category": "B_DistributionShift",
+      "difficulty": "medium",
+      "model_name": "fraud_ranker",
+      "model_version": "v35",
+      "root_cause": "feature_distribution_drift",
+      "expected_repair": "partial_retraining",
+      "trigger_reason": "Old accounts are now used in slower account takeover flows.",
+      "metric_drop": {"recall_at_fpr": -0.12, "precision": -0.03, "amount_recall": -0.13},
+      "affected_segments": {"old_accounts": -0.19},
+      "monitor_alert": {"missing_rate_spike": 0.02, "psi_max": 0.27, "shap_shift": 0.21, "behavior_shift": 0.07, "graph_shift": 0.05, "rule_hit_delta": 0.03, "calibration_shift": 0.05, "traffic_shift": 0.05, "label_maturity": 0.76, "label_maturity_gap": 0.03},
+      "expected_gain": 0.10,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "feature_distribution_drift", "confidence": 0.71, "severity": "medium", "summary": "Old-account recall degraded while new accounts stayed stable."},
+        "compute_feature_psi": {"cause": "feature_distribution_drift", "confidence": 0.91, "severity": "high", "summary": "account_age and login_interval PSI are elevated."},
+        "analyze_shap_shift": {"cause": "feature_distribution_drift", "confidence": 0.86, "severity": "high", "summary": "Model still overweights new-account features."}
+      }
+    },
+    {
+      "alert_id": "diag_label_01",
+      "category": "D_FeedbackLoop",
+      "difficulty": "easy",
+      "model_name": "fraud_ranker",
+      "model_version": "v36",
+      "root_cause": "label_delay",
+      "expected_repair": "defer_until_label_mature",
+      "trigger_reason": "Precision appears to fall after the chargeback observation window was shortened.",
+      "metric_drop": {"recall_at_fpr": -0.06, "precision": -0.12, "amount_recall": -0.05},
+      "affected_segments": {"recent_cohort": -0.14},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.06, "shap_shift": 0.05, "behavior_shift": 0.04, "graph_shift": 0.04, "rule_hit_delta": 0.01, "calibration_shift": 0.02, "traffic_shift": 0.03, "label_maturity": 0.34, "label_maturity_gap": 0.38},
+      "expected_gain": 0.0,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "label_delay", "confidence": 0.62, "severity": "medium", "summary": "Drop concentrated in recent, unresolved labels."},
+        "check_label_maturity": {"cause": "label_delay", "confidence": 0.96, "severity": "high", "summary": "Only 34% of positive labels are mature; negative labels are not reliable."}
+      }
+    },
+    {
+      "alert_id": "diag_label_02",
+      "category": "D_FeedbackLoop",
+      "difficulty": "medium",
+      "model_name": "fraud_ranker",
+      "model_version": "v37",
+      "root_cause": "label_delay",
+      "expected_repair": "defer_until_label_mature",
+      "trigger_reason": "Manual review backlog makes current false-negative labels immature.",
+      "metric_drop": {"recall_at_fpr": -0.07, "precision": -0.10, "amount_recall": -0.04},
+      "affected_segments": {"manual_review": -0.16},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.07, "shap_shift": 0.06, "behavior_shift": 0.05, "graph_shift": 0.05, "rule_hit_delta": 0.02, "calibration_shift": 0.03, "traffic_shift": 0.04, "label_maturity": 0.39, "label_maturity_gap": 0.33},
+      "expected_gain": 0.0,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "label_delay", "confidence": 0.64, "severity": "medium", "summary": "Manual-review cohort drives most apparent degradation."},
+        "check_label_maturity": {"cause": "label_delay", "confidence": 0.94, "severity": "high", "summary": "Pending review ratio is 41%; wait before repair decisions."}
+      }
+    },
+    {
+      "alert_id": "diag_segment_01",
+      "category": "B_DistributionShift",
+      "difficulty": "medium",
+      "model_name": "fraud_ranker",
+      "model_version": "v38",
+      "root_cause": "traffic_segment_shift",
+      "expected_repair": "threshold_adjustment",
+      "trigger_reason": "A new merchant channel changed the score distribution without feature breakage.",
+      "metric_drop": {"recall_at_fpr": -0.08, "precision": -0.07, "amount_recall": -0.06},
+      "affected_segments": {"merchant_channel_z": -0.22},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.12, "shap_shift": 0.08, "behavior_shift": 0.07, "graph_shift": 0.07, "rule_hit_delta": 0.04, "calibration_shift": 0.06, "traffic_shift": 0.29, "label_maturity": 0.78, "label_maturity_gap": 0.02},
+      "expected_gain": 0.07,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "traffic_segment_shift", "confidence": 0.91, "severity": "high", "summary": "New merchant channel drives the metric drop; global features are stable."}
+      }
+    },
+    {
+      "alert_id": "diag_segment_02",
+      "category": "B_DistributionShift",
+      "difficulty": "hard",
+      "model_name": "fraud_ranker",
+      "model_version": "v39",
+      "root_cause": "traffic_segment_shift",
+      "expected_repair": "threshold_adjustment",
+      "trigger_reason": "Legitimate corporate shared-network traffic increased sharply.",
+      "metric_drop": {"recall_at_fpr": -0.05, "precision": -0.11, "amount_recall": -0.05},
+      "affected_segments": {"corporate_network": -0.25},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.11, "shap_shift": 0.07, "behavior_shift": 0.06, "graph_shift": 0.06, "rule_hit_delta": 0.05, "calibration_shift": 0.07, "traffic_shift": 0.31, "label_maturity": 0.81, "label_maturity_gap": 0.02},
+      "expected_gain": 0.08,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "traffic_segment_shift", "confidence": 0.92, "severity": "high", "summary": "Corporate network segment grew and shifted score calibration."}
+      }
+    },
+    {
+      "alert_id": "diag_attack_01",
+      "category": "C_AdversarialDrift",
+      "difficulty": "hard",
+      "model_name": "fraud_ranker",
+      "model_version": "v40",
+      "root_cause": "attack_pattern_drift",
+      "expected_repair": "rule_update",
+      "trigger_reason": "Fraud rings stopped sharing devices and now converge through rotating payees.",
+      "metric_drop": {"recall_at_fpr": -0.19, "precision": -0.04, "amount_recall": -0.20},
+      "affected_segments": {"old_accounts": -0.23},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.10, "shap_shift": 0.11, "behavior_shift": 0.24, "graph_shift": 0.31, "rule_hit_delta": 0.05, "calibration_shift": 0.04, "traffic_shift": 0.08, "label_maturity": 0.72, "label_maturity_gap": 0.04},
+      "expected_gain": 0.16,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "attack_pattern_drift", "confidence": 0.70, "severity": "high", "summary": "False negatives cluster in old accounts."},
+        "analyze_behavior_sequence_shift": {"cause": "attack_pattern_drift", "confidence": 0.83, "severity": "high", "summary": "Application cadence changed to low-frequency coordinated bursts."},
+        "analyze_graph_pattern_shift": {"cause": "attack_pattern_drift", "confidence": 0.96, "severity": "critical", "summary": "New two-hop rotating payee motif appears in missed fraud."}
+      }
+    },
+    {
+      "alert_id": "diag_attack_02",
+      "category": "C_AdversarialDrift",
+      "difficulty": "hard",
+      "model_name": "fraud_ranker",
+      "model_version": "v41",
+      "root_cause": "attack_pattern_drift",
+      "expected_repair": "rule_update",
+      "trigger_reason": "Deepfake-assisted applications create a new behavior and graph motif.",
+      "metric_drop": {"recall_at_fpr": -0.21, "precision": -0.05, "amount_recall": -0.23},
+      "affected_segments": {"unknown_cluster": -0.28},
+      "monitor_alert": {"missing_rate_spike": 0.02, "psi_max": 0.13, "shap_shift": 0.12, "behavior_shift": 0.32, "graph_shift": 0.27, "rule_hit_delta": 0.04, "calibration_shift": 0.04, "traffic_shift": 0.09, "label_maturity": 0.70, "label_maturity_gap": 0.05},
+      "expected_gain": 0.18,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "attack_pattern_drift", "confidence": 0.72, "severity": "high", "summary": "Unknown cluster accounts for most amount recall loss."},
+        "analyze_behavior_sequence_shift": {"cause": "attack_pattern_drift", "confidence": 0.90, "severity": "critical", "summary": "Face-video and input rhythm sequences shifted."},
+        "analyze_graph_pattern_shift": {"cause": "attack_pattern_drift", "confidence": 0.92, "severity": "critical", "summary": "New device-video-payee motif absent from memory."}
+      }
+    },
+    {
+      "alert_id": "diag_rule_01",
+      "category": "D_FeedbackLoop",
+      "difficulty": "medium",
+      "model_name": "fraud_ranker",
+      "model_version": "v42",
+      "root_cause": "rule_interaction_issue",
+      "expected_repair": "rule_update",
+      "trigger_reason": "A newly launched pre-filter rule removed high-risk samples before model scoring.",
+      "metric_drop": {"recall_at_fpr": -0.11, "precision": -0.08, "amount_recall": -0.12},
+      "affected_segments": {"pre_filter_hits": -0.20},
+      "monitor_alert": {"missing_rate_spike": 0.02, "psi_max": 0.09, "shap_shift": 0.06, "behavior_shift": 0.05, "graph_shift": 0.04, "rule_hit_delta": 0.34, "calibration_shift": 0.05, "traffic_shift": 0.06, "label_maturity": 0.82, "label_maturity_gap": 0.02},
+      "expected_gain": 0.10,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "rule_interaction_issue", "confidence": 0.76, "severity": "high", "summary": "Drop starts exactly after pre-filter launch."},
+        "run_sql_profile": {"cause": "rule_interaction_issue", "confidence": 0.94, "severity": "high", "summary": "High-risk scored traffic fell after the new rule rerouted cases."}
+      }
+    },
+    {
+      "alert_id": "diag_rule_02",
+      "category": "D_FeedbackLoop",
+      "difficulty": "medium",
+      "model_name": "fraud_ranker",
+      "model_version": "v43",
+      "root_cause": "rule_interaction_issue",
+      "expected_repair": "rule_update",
+      "trigger_reason": "Manual review rule changed sample mix and hurt model threshold assumptions.",
+      "metric_drop": {"recall_at_fpr": -0.10, "precision": -0.09, "amount_recall": -0.10},
+      "affected_segments": {"manual_review_rule": -0.18},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.08, "shap_shift": 0.06, "behavior_shift": 0.04, "graph_shift": 0.04, "rule_hit_delta": 0.28, "calibration_shift": 0.06, "traffic_shift": 0.07, "label_maturity": 0.80, "label_maturity_gap": 0.02},
+      "expected_gain": 0.09,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "rule_interaction_issue", "confidence": 0.73, "severity": "high", "summary": "Manual-review rule segment drives the degradation."},
+        "run_sql_profile": {"cause": "rule_interaction_issue", "confidence": 0.91, "severity": "high", "summary": "Rule hit mix changed the evaluated population."}
+      }
+    },
+    {
+      "alert_id": "diag_threshold_01",
+      "category": "B_DistributionShift",
+      "difficulty": "medium",
+      "model_name": "fraud_ranker",
+      "model_version": "v44",
+      "root_cause": "threshold_miscalibration",
+      "expected_repair": "threshold_adjustment",
+      "trigger_reason": "Model ranking is stable, but fixed threshold no longer matches target FPR.",
+      "metric_drop": {"recall_at_fpr": -0.09, "precision": -0.03, "amount_recall": -0.07},
+      "affected_segments": {"all": -0.08},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.08, "shap_shift": 0.21, "behavior_shift": 0.05, "graph_shift": 0.05, "rule_hit_delta": 0.03, "calibration_shift": 0.27, "traffic_shift": 0.05, "label_maturity": 0.83, "label_maturity_gap": 0.01},
+      "expected_gain": 0.08,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "threshold_miscalibration", "confidence": 0.68, "severity": "medium", "summary": "Ranking metrics are stable, operating point degraded."},
+        "analyze_shap_shift": {"cause": "threshold_miscalibration", "confidence": 0.92, "severity": "high", "summary": "Score calibration shifted while feature attribution remains stable."}
+      }
+    },
+    {
+      "alert_id": "diag_threshold_02",
+      "category": "B_DistributionShift",
+      "difficulty": "medium",
+      "model_name": "fraud_ranker",
+      "model_version": "v45",
+      "root_cause": "threshold_miscalibration",
+      "expected_repair": "threshold_adjustment",
+      "trigger_reason": "Seasonal traffic changed score density around the review threshold.",
+      "metric_drop": {"recall_at_fpr": -0.08, "precision": -0.04, "amount_recall": -0.08},
+      "affected_segments": {"seasonal_campaign": -0.12},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.09, "shap_shift": 0.19, "behavior_shift": 0.06, "graph_shift": 0.06, "rule_hit_delta": 0.02, "calibration_shift": 0.24, "traffic_shift": 0.08, "label_maturity": 0.84, "label_maturity_gap": 0.01},
+      "expected_gain": 0.075,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "threshold_miscalibration", "confidence": 0.66, "severity": "medium", "summary": "Campaign traffic changes score density near threshold."},
+        "analyze_shap_shift": {"cause": "threshold_miscalibration", "confidence": 0.90, "severity": "high", "summary": "Attribution stable but calibration curve moved."}
+      }
+    },
+    {
+      "alert_id": "diag_capacity_01",
+      "category": "B_DistributionShift",
+      "difficulty": "hard",
+      "model_name": "fraud_ranker",
+      "model_version": "v46",
+      "root_cause": "model_capacity_issue",
+      "expected_repair": "full_retraining",
+      "trigger_reason": "Broad degradation remains after data, labels, traffic and rules are stable.",
+      "metric_drop": {"recall_at_fpr": -0.17, "precision": -0.07, "amount_recall": -0.18},
+      "affected_segments": {"all": -0.16},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.12, "shap_shift": 0.12, "behavior_shift": 0.10, "graph_shift": 0.10, "rule_hit_delta": 0.02, "calibration_shift": 0.05, "traffic_shift": 0.05, "label_maturity": 0.82, "label_maturity_gap": 0.02},
+      "expected_gain": 0.13,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "model_capacity_issue", "confidence": 0.62, "severity": "medium", "summary": "Degradation is broad rather than segment-specific."},
+        "compute_feature_psi": {"cause": "model_capacity_issue", "confidence": 0.70, "severity": "medium", "summary": "No single feature drift explains the drop."},
+        "analyze_shap_shift": {"cause": "model_capacity_issue", "confidence": 0.93, "severity": "high", "summary": "Multiple stale interactions indicate model capacity refresh is needed."}
+      }
+    },
+    {
+      "alert_id": "diag_capacity_02",
+      "category": "B_DistributionShift",
+      "difficulty": "hard",
+      "model_name": "fraud_ranker",
+      "model_version": "v47",
+      "root_cause": "model_capacity_issue",
+      "expected_repair": "full_retraining",
+      "trigger_reason": "Accumulated moderate changes across many features exceed patch scope.",
+      "metric_drop": {"recall_at_fpr": -0.15, "precision": -0.06, "amount_recall": -0.16},
+      "affected_segments": {"all": -0.14},
+      "monitor_alert": {"missing_rate_spike": 0.02, "psi_max": 0.13, "shap_shift": 0.13, "behavior_shift": 0.11, "graph_shift": 0.11, "rule_hit_delta": 0.03, "calibration_shift": 0.06, "traffic_shift": 0.06, "label_maturity": 0.81, "label_maturity_gap": 0.02},
+      "expected_gain": 0.12,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "model_capacity_issue", "confidence": 0.63, "severity": "medium", "summary": "No single segment dominates the loss."},
+        "compute_feature_psi": {"cause": "model_capacity_issue", "confidence": 0.68, "severity": "medium", "summary": "Many small shifts, no clear patch target."},
+        "analyze_shap_shift": {"cause": "model_capacity_issue", "confidence": 0.91, "severity": "high", "summary": "Stale cross-feature interactions require full retraining."}
+      }
+    },
+    {
+      "alert_id": "diag_confound_01",
+      "category": "A_DataIntegrity",
+      "difficulty": "confounded",
+      "model_name": "fraud_ranker",
+      "model_version": "v48",
+      "root_cause": "data_quality_issue",
+      "expected_repair": "feature_patch",
+      "trigger_reason": "Feature drift and missing-rate alerts fire together after a silent ETL schema change.",
+      "metric_drop": {"recall_at_fpr": -0.18, "precision": -0.05, "amount_recall": -0.17},
+      "affected_segments": {"android": -0.23, "daytime": -0.18},
+      "monitor_alert": {"missing_rate_spike": 0.19, "psi_max": 0.28, "shap_shift": 0.22, "behavior_shift": 0.06, "graph_shift": 0.05, "rule_hit_delta": 0.03, "calibration_shift": 0.04, "traffic_shift": 0.07, "label_maturity": 0.79, "label_maturity_gap": 0.02},
+      "expected_gain": 0.14,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "feature_distribution_drift", "confidence": 0.74, "severity": "medium", "summary": "The affected segment also has behavior distribution movement."},
+        "compute_feature_psi": {"cause": "feature_distribution_drift", "confidence": 0.90, "severity": "high", "summary": "Several behavioral features show elevated PSI."},
+        "analyze_shap_shift": {"cause": "feature_distribution_drift", "confidence": 0.86, "severity": "high", "summary": "Attribution moved toward missing proxy features."},
+        "run_sql_profile": {"cause": "data_quality_issue", "confidence": 0.79, "severity": "high", "summary": "Device feature join volume dropped in one upstream table."},
+        "check_data_quality": {"cause": "data_quality_issue", "confidence": 0.82, "severity": "critical", "summary": "A schema change nulls device_age for a high-risk Android slice."}
+      }
+    },
+    {
+      "alert_id": "diag_confound_02",
+      "category": "D_FeedbackLoop",
+      "difficulty": "confounded",
+      "model_name": "fraud_ranker",
+      "model_version": "v49",
+      "root_cause": "rule_interaction_issue",
+      "expected_repair": "rule_update",
+      "trigger_reason": "A rule launch and a score-calibration shift appear in the same window.",
+      "metric_drop": {"recall_at_fpr": -0.12, "precision": -0.09, "amount_recall": -0.11},
+      "affected_segments": {"manual_review_rule": -0.19, "all": -0.07},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.10, "shap_shift": 0.24, "behavior_shift": 0.05, "graph_shift": 0.05, "rule_hit_delta": 0.23, "calibration_shift": 0.25, "traffic_shift": 0.07, "label_maturity": 0.82, "label_maturity_gap": 0.02},
+      "expected_gain": 0.09,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "threshold_miscalibration", "confidence": 0.72, "severity": "medium", "summary": "The global calibration curve shifted near the review threshold."},
+        "analyze_shap_shift": {"cause": "threshold_miscalibration", "confidence": 0.91, "severity": "high", "summary": "Score density moved around the operating threshold."},
+        "run_sql_profile": {"cause": "rule_interaction_issue", "confidence": 0.84, "severity": "high", "summary": "A new manual-review rule rerouted high-score samples before model evaluation."}
+      }
+    },
+    {
+      "alert_id": "diag_confound_03",
+      "category": "C_AdversarialDrift",
+      "difficulty": "confounded",
+      "model_name": "fraud_ranker",
+      "model_version": "v50",
+      "root_cause": "attack_pattern_drift",
+      "expected_repair": "rule_update",
+      "trigger_reason": "Recent labels are immature, but mature confirmed losses cluster in a new graph motif.",
+      "metric_drop": {"recall_at_fpr": -0.20, "precision": -0.04, "amount_recall": -0.22},
+      "affected_segments": {"unknown_cluster": -0.27, "recent_cohort": -0.12},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.11, "shap_shift": 0.10, "behavior_shift": 0.28, "graph_shift": 0.29, "rule_hit_delta": 0.04, "calibration_shift": 0.04, "traffic_shift": 0.06, "label_maturity": 0.46, "label_maturity_gap": 0.22},
+      "expected_gain": 0.16,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "label_delay", "confidence": 0.73, "severity": "medium", "summary": "Some recent labels are unresolved."},
+        "check_label_maturity": {"cause": "label_delay", "confidence": 0.78, "severity": "high", "summary": "Recent negative labels are immature, but mature positives exist in one cluster."},
+        "analyze_behavior_sequence_shift": {"cause": "attack_pattern_drift", "confidence": 0.86, "severity": "high", "summary": "Confirmed mature positives share a new sequence pattern."},
+        "analyze_graph_pattern_shift": {"cause": "attack_pattern_drift", "confidence": 0.88, "severity": "critical", "summary": "Mature fraud labels concentrate in a new two-hop payment motif."}
+      }
+    },
+    {
+      "alert_id": "diag_confound_04",
+      "category": "B_DistributionShift",
+      "difficulty": "confounded",
+      "model_name": "fraud_ranker",
+      "model_version": "v51",
+      "root_cause": "traffic_segment_shift",
+      "expected_repair": "threshold_adjustment",
+      "trigger_reason": "A dense legitimate partner graph looks similar to an attack graph in graph metrics.",
+      "metric_drop": {"recall_at_fpr": -0.07, "precision": -0.13, "amount_recall": -0.06},
+      "affected_segments": {"partner_channel": -0.25},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.12, "shap_shift": 0.09, "behavior_shift": 0.10, "graph_shift": 0.24, "rule_hit_delta": 0.04, "calibration_shift": 0.07, "traffic_shift": 0.30, "label_maturity": 0.84, "label_maturity_gap": 0.02},
+      "expected_gain": 0.08,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "traffic_segment_shift", "confidence": 0.79, "severity": "high", "summary": "A partner channel with legitimate dense graphs dominates false positives."},
+        "analyze_behavior_sequence_shift": {"cause": "attack_pattern_drift", "confidence": 0.74, "severity": "medium", "summary": "Some behavior sequences resemble previous attack flows."},
+        "analyze_graph_pattern_shift": {"cause": "attack_pattern_drift", "confidence": 0.83, "severity": "high", "summary": "Graph density resembles a known fraud motif but labels are mostly clean."}
+      }
+    },
+    {
+      "alert_id": "diag_integrity_skew_01",
+      "category": "A_DataIntegrity",
+      "difficulty": "hard",
+      "model_name": "fraud_ranker",
+      "model_version": "v52",
+      "root_cause": "data_quality_issue",
+      "expected_repair": "feature_patch",
+      "trigger_reason": "Training and serving feature definitions diverged after a feature-store migration.",
+      "metric_drop": {"recall_at_fpr": -0.14, "precision": -0.05, "amount_recall": -0.15},
+      "affected_segments": {"new_user": -0.18},
+      "monitor_alert": {"missing_rate_spike": 0.10, "psi_max": 0.23, "shap_shift": 0.18, "behavior_shift": 0.06, "graph_shift": 0.04, "rule_hit_delta": 0.02, "calibration_shift": 0.04, "traffic_shift": 0.05, "label_maturity": 0.81, "label_maturity_gap": 0.02},
+      "expected_gain": 0.12,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "feature_distribution_drift", "confidence": 0.66, "severity": "medium", "summary": "New-user feature distribution moved after migration."},
+        "run_sql_profile": {"cause": "data_quality_issue", "confidence": 0.88, "severity": "high", "summary": "Offline and online feature SQL use different default values."},
+        "check_data_quality": {"cause": "data_quality_issue", "confidence": 0.93, "severity": "critical", "summary": "Training-serving skew confirmed for device_age_bucket."}
+      }
+    },
+    {
+      "alert_id": "diag_integrity_delay_01",
+      "category": "A_DataIntegrity",
+      "difficulty": "medium",
+      "model_name": "fraud_ranker",
+      "model_version": "v53",
+      "root_cause": "data_quality_issue",
+      "expected_repair": "feature_patch",
+      "trigger_reason": "Feature arrival latency hides recent risky device intelligence.",
+      "metric_drop": {"recall_at_fpr": -0.13, "precision": -0.04, "amount_recall": -0.14},
+      "affected_segments": {"high_velocity_device": -0.19},
+      "monitor_alert": {"missing_rate_spike": 0.14, "psi_max": 0.20, "shap_shift": 0.16, "behavior_shift": 0.07, "graph_shift": 0.05, "rule_hit_delta": 0.03, "calibration_shift": 0.04, "traffic_shift": 0.05, "label_maturity": 0.82, "label_maturity_gap": 0.01},
+      "expected_gain": 0.11,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "data_quality_issue", "confidence": 0.70, "severity": "high", "summary": "Loss is concentrated where freshest device intelligence matters."},
+        "run_sql_profile": {"cause": "data_quality_issue", "confidence": 0.84, "severity": "high", "summary": "Feature snapshot is delayed by 9 hours."},
+        "check_data_quality": {"cause": "data_quality_issue", "confidence": 0.91, "severity": "high", "summary": "Hidden data delay confirmed in device intelligence table."}
+      }
+    },
+    {
+      "alert_id": "diag_dist_population_01",
+      "category": "B_DistributionShift",
+      "difficulty": "medium",
+      "model_name": "fraud_ranker",
+      "model_version": "v54",
+      "root_cause": "traffic_segment_shift",
+      "expected_repair": "threshold_adjustment",
+      "trigger_reason": "A partner campaign shifts traffic mix and changes operating-point calibration.",
+      "metric_drop": {"recall_at_fpr": -0.07, "precision": -0.08, "amount_recall": -0.06},
+      "affected_segments": {"partner_campaign": -0.18},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.13, "shap_shift": 0.10, "behavior_shift": 0.07, "graph_shift": 0.08, "rule_hit_delta": 0.05, "calibration_shift": 0.10, "traffic_shift": 0.27, "label_maturity": 0.84, "label_maturity_gap": 0.01},
+      "expected_gain": 0.07,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "traffic_segment_shift", "confidence": 0.90, "severity": "high", "summary": "Partner campaign traffic dominates false positives."}
+      }
+    },
+    {
+      "alert_id": "diag_dist_capacity_03",
+      "category": "B_DistributionShift",
+      "difficulty": "hard",
+      "model_name": "fraud_ranker",
+      "model_version": "v55",
+      "root_cause": "model_capacity_issue",
+      "expected_repair": "full_retraining",
+      "trigger_reason": "Many weak shifts accumulate and exceed the existing model's interaction capacity.",
+      "metric_drop": {"recall_at_fpr": -0.16, "precision": -0.07, "amount_recall": -0.17},
+      "affected_segments": {"all": -0.15},
+      "monitor_alert": {"missing_rate_spike": 0.02, "psi_max": 0.14, "shap_shift": 0.14, "behavior_shift": 0.12, "graph_shift": 0.12, "rule_hit_delta": 0.03, "calibration_shift": 0.07, "traffic_shift": 0.06, "label_maturity": 0.82, "label_maturity_gap": 0.02},
+      "expected_gain": 0.12,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "model_capacity_issue", "confidence": 0.61, "severity": "medium", "summary": "No single segment dominates the drop."},
+        "compute_feature_psi": {"cause": "model_capacity_issue", "confidence": 0.69, "severity": "medium", "summary": "Small shifts occur across many feature families."},
+        "analyze_shap_shift": {"cause": "model_capacity_issue", "confidence": 0.92, "severity": "high", "summary": "Cross-feature interactions stale across the board."}
+      }
+    },
+    {
+      "alert_id": "diag_dist_feature_03",
+      "category": "B_DistributionShift",
+      "difficulty": "medium",
+      "model_name": "fraud_ranker",
+      "model_version": "v56",
+      "root_cause": "feature_distribution_drift",
+      "expected_repair": "partial_retraining",
+      "trigger_reason": "Input rhythm and session length drift in one app version.",
+      "metric_drop": {"recall_at_fpr": -0.10, "precision": -0.03, "amount_recall": -0.11},
+      "affected_segments": {"app_v9": -0.16},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.24, "shap_shift": 0.20, "behavior_shift": 0.12, "graph_shift": 0.05, "rule_hit_delta": 0.02, "calibration_shift": 0.04, "traffic_shift": 0.06, "label_maturity": 0.79, "label_maturity_gap": 0.02},
+      "expected_gain": 0.09,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "feature_distribution_drift", "confidence": 0.69, "severity": "medium", "summary": "Drop is limited to app_v9."},
+        "compute_feature_psi": {"cause": "feature_distribution_drift", "confidence": 0.92, "severity": "high", "summary": "session_length and input_rhythm PSI exceed 0.2."},
+        "analyze_shap_shift": {"cause": "feature_distribution_drift", "confidence": 0.85, "severity": "high", "summary": "Model attribution overweights old input-rhythm distribution."}
+      }
+    },
+    {
+      "alert_id": "diag_adv_entity_01",
+      "category": "C_AdversarialDrift",
+      "difficulty": "hard",
+      "model_name": "fraud_ranker",
+      "model_version": "v57",
+      "root_cause": "attack_pattern_drift",
+      "expected_repair": "rule_update",
+      "trigger_reason": "Entity resolution attack breaks direct account-device links.",
+      "metric_drop": {"recall_at_fpr": -0.18, "precision": -0.04, "amount_recall": -0.19},
+      "affected_segments": {"entity_split_cluster": -0.24},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.11, "shap_shift": 0.11, "behavior_shift": 0.23, "graph_shift": 0.30, "rule_hit_delta": 0.04, "calibration_shift": 0.04, "traffic_shift": 0.06, "label_maturity": 0.74, "label_maturity_gap": 0.03},
+      "expected_gain": 0.15,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "attack_pattern_drift", "confidence": 0.70, "severity": "high", "summary": "Loss concentrated in entity-split clusters."},
+        "analyze_behavior_sequence_shift": {"cause": "attack_pattern_drift", "confidence": 0.84, "severity": "high", "summary": "Behavior remains coordinated despite broken entity links."},
+        "analyze_graph_pattern_shift": {"cause": "attack_pattern_drift", "confidence": 0.94, "severity": "critical", "summary": "Indirect address-payee links replace direct device links."}
+      }
+    },
+    {
+      "alert_id": "diag_adv_amount_split_01",
+      "category": "C_AdversarialDrift",
+      "difficulty": "medium",
+      "model_name": "fraud_ranker",
+      "model_version": "v58",
+      "root_cause": "attack_pattern_drift",
+      "expected_repair": "rule_update",
+      "trigger_reason": "Fraudsters split amounts to avoid threshold rules while keeping sequence similarity.",
+      "metric_drop": {"recall_at_fpr": -0.14, "precision": -0.03, "amount_recall": -0.16},
+      "affected_segments": {"small_amount_batch": -0.20},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.12, "shap_shift": 0.10, "behavior_shift": 0.26, "graph_shift": 0.18, "rule_hit_delta": 0.06, "calibration_shift": 0.04, "traffic_shift": 0.05, "label_maturity": 0.76, "label_maturity_gap": 0.03},
+      "expected_gain": 0.12,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "attack_pattern_drift", "confidence": 0.70, "severity": "medium", "summary": "Small-amount batch accounts for most missed amount."},
+        "analyze_behavior_sequence_shift": {"cause": "attack_pattern_drift", "confidence": 0.91, "severity": "high", "summary": "Amount splitting pattern appears in transaction sequences."},
+        "analyze_graph_pattern_shift": {"cause": "attack_pattern_drift", "confidence": 0.82, "severity": "high", "summary": "Split transactions still converge to repeated payees."}
+      }
+    },
+    {
+      "alert_id": "diag_adv_proxy_01",
+      "category": "C_AdversarialDrift",
+      "difficulty": "hard",
+      "model_name": "fraud_ranker",
+      "model_version": "v59",
+      "root_cause": "attack_pattern_drift",
+      "expected_repair": "rule_update",
+      "trigger_reason": "Proxy pool rotation reduces IP feature value but graph and behavior still expose coordination.",
+      "metric_drop": {"recall_at_fpr": -0.15, "precision": -0.04, "amount_recall": -0.17},
+      "affected_segments": {"proxy_pool": -0.22},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.17, "shap_shift": 0.13, "behavior_shift": 0.24, "graph_shift": 0.22, "rule_hit_delta": 0.05, "calibration_shift": 0.05, "traffic_shift": 0.06, "label_maturity": 0.73, "label_maturity_gap": 0.03},
+      "expected_gain": 0.13,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "attack_pattern_drift", "confidence": 0.69, "severity": "medium", "summary": "Proxy-pool segment drives missed fraud."},
+        "analyze_behavior_sequence_shift": {"cause": "attack_pattern_drift", "confidence": 0.87, "severity": "high", "summary": "Sequence similarity persists after proxy rotation."},
+        "analyze_graph_pattern_shift": {"cause": "attack_pattern_drift", "confidence": 0.89, "severity": "high", "summary": "Rotating IPs share downstream payee and device-family motifs."}
+      }
+    },
+    {
+      "alert_id": "diag_feedback_review_01",
+      "category": "D_FeedbackLoop",
+      "difficulty": "hard",
+      "model_name": "fraud_ranker",
+      "model_version": "v60",
+      "root_cause": "label_delay",
+      "expected_repair": "defer_until_label_mature",
+      "trigger_reason": "Manual review backlog delays positive labels after a policy launch.",
+      "metric_drop": {"recall_at_fpr": -0.07, "precision": -0.11, "amount_recall": -0.06},
+      "affected_segments": {"review_backlog": -0.18},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.08, "shap_shift": 0.06, "behavior_shift": 0.05, "graph_shift": 0.05, "rule_hit_delta": 0.11, "calibration_shift": 0.04, "traffic_shift": 0.06, "label_maturity": 0.37, "label_maturity_gap": 0.34},
+      "expected_gain": 0.0,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "label_delay", "confidence": 0.70, "severity": "medium", "summary": "Review backlog segment dominates apparent precision drop."},
+        "check_label_maturity": {"cause": "label_delay", "confidence": 0.95, "severity": "high", "summary": "Positive labels are not mature due to review backlog."}
+      }
+    },
+    {
+      "alert_id": "diag_feedback_rule_loop_01",
+      "category": "D_FeedbackLoop",
+      "difficulty": "hard",
+      "model_name": "fraud_ranker",
+      "model_version": "v61",
+      "root_cause": "rule_interaction_issue",
+      "expected_repair": "rule_update",
+      "trigger_reason": "A reject rule changes the model scoring population and creates a feedback loop.",
+      "metric_drop": {"recall_at_fpr": -0.12, "precision": -0.08, "amount_recall": -0.13},
+      "affected_segments": {"reject_rule_hits": -0.21},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.10, "shap_shift": 0.07, "behavior_shift": 0.05, "graph_shift": 0.05, "rule_hit_delta": 0.33, "calibration_shift": 0.06, "traffic_shift": 0.07, "label_maturity": 0.80, "label_maturity_gap": 0.02},
+      "expected_gain": 0.10,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "rule_interaction_issue", "confidence": 0.76, "severity": "high", "summary": "Drop appears only after reject-rule routing change."},
+        "run_sql_profile": {"cause": "rule_interaction_issue", "confidence": 0.93, "severity": "high", "summary": "Scored population excludes high-risk rejected cases."}
+      }
+    },
+    {
+      "alert_id": "diag_feedback_capacity_attack_01",
+      "category": "D_FeedbackLoop",
+      "difficulty": "confounded",
+      "model_name": "fraud_ranker",
+      "model_version": "v62",
+      "root_cause": "rule_interaction_issue",
+      "expected_repair": "rule_update",
+      "trigger_reason": "Borderline traffic floods human review and delays downstream labels.",
+      "metric_drop": {"recall_at_fpr": -0.10, "precision": -0.10, "amount_recall": -0.11},
+      "affected_segments": {"review_queue": -0.20},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.09, "shap_shift": 0.08, "behavior_shift": 0.12, "graph_shift": 0.10, "rule_hit_delta": 0.24, "calibration_shift": 0.08, "traffic_shift": 0.11, "label_maturity": 0.48, "label_maturity_gap": 0.24},
+      "expected_gain": 0.09,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "label_delay", "confidence": 0.74, "severity": "medium", "summary": "Labels are delayed in the review queue."},
+        "check_label_maturity": {"cause": "label_delay", "confidence": 0.80, "severity": "high", "summary": "Label maturity is low but not the original trigger."},
+        "run_sql_profile": {"cause": "rule_interaction_issue", "confidence": 0.86, "severity": "high", "summary": "Review-capacity rule changed routing and created feedback delay."}
+      }
+    },
+    {
+      "alert_id": "diag_integrity_entity_resolution_01",
+      "category": "A_DataIntegrity",
+      "difficulty": "hard",
+      "model_name": "fraud_ranker",
+      "model_version": "v63",
+      "root_cause": "data_quality_issue",
+      "expected_repair": "feature_patch",
+      "trigger_reason": "Entity resolution changed after a deduplication job and broke historical device-account links.",
+      "metric_drop": {"recall_at_fpr": -0.15, "precision": -0.05, "amount_recall": -0.16},
+      "affected_segments": {"entity_merge_changed": -0.21},
+      "monitor_alert": {"missing_rate_spike": 0.12, "psi_max": 0.21, "shap_shift": 0.17, "behavior_shift": 0.08, "graph_shift": 0.16, "rule_hit_delta": 0.03, "calibration_shift": 0.04, "traffic_shift": 0.05, "label_maturity": 0.82, "label_maturity_gap": 0.02},
+      "expected_gain": 0.13,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "data_quality_issue", "confidence": 0.68, "severity": "high", "summary": "Drop appears in users affected by entity merge changes."},
+        "run_sql_profile": {"cause": "data_quality_issue", "confidence": 0.87, "severity": "high", "summary": "Deduplication job changed the entity_id mapping cardinality."},
+        "check_data_quality": {"cause": "data_quality_issue", "confidence": 0.94, "severity": "critical", "summary": "Entity resolution regression confirmed for device-account history."}
+      }
+    },
+    {
+      "alert_id": "diag_tool_required_sql_01",
+      "category": "E_AgentToolUse",
+      "difficulty": "tool_order",
+      "model_name": "fraud_ranker",
+      "model_version": "v64",
+      "root_cause": "data_quality_issue",
+      "expected_repair": "feature_patch",
+      "trigger_reason": "A moderate PSI alert could be real drift or a stale join; the agent must inspect SQL before repair.",
+      "metric_drop": {"recall_at_fpr": -0.13, "precision": -0.04, "amount_recall": -0.12},
+      "affected_segments": {"device_join_slice": -0.18},
+      "monitor_alert": {"missing_rate_spike": 0.08, "psi_max": 0.22, "shap_shift": 0.19, "behavior_shift": 0.06, "graph_shift": 0.05, "rule_hit_delta": 0.02, "calibration_shift": 0.04, "traffic_shift": 0.05, "label_maturity": 0.82, "label_maturity_gap": 0.02},
+      "required_actions": ["run_sql_profile", "check_data_quality", "run_replay_backtest"],
+      "forbidden_actions": ["recommend_full_retraining"],
+      "max_tool_cost": 6.8,
+      "expected_gain": 0.11,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "feature_distribution_drift", "confidence": 0.70, "severity": "medium", "summary": "Segment looks like feature drift at first glance."},
+        "compute_feature_psi": {"cause": "feature_distribution_drift", "confidence": 0.88, "severity": "high", "summary": "Feature PSI is elevated but not causal."},
+        "run_sql_profile": {"cause": "data_quality_issue", "confidence": 0.82, "severity": "high", "summary": "Serving join applies an outdated partition."},
+        "check_data_quality": {"cause": "data_quality_issue", "confidence": 0.90, "severity": "critical", "summary": "Stale join confirmed for device features."}
+      }
+    },
+    {
+      "alert_id": "diag_tool_label_guard_01",
+      "category": "E_AgentToolUse",
+      "difficulty": "tool_guard",
+      "model_name": "fraud_ranker",
+      "model_version": "v65",
+      "root_cause": "label_delay",
+      "expected_repair": "defer_until_label_mature",
+      "trigger_reason": "Metrics degrade in a recent cohort where labels may not be mature.",
+      "metric_drop": {"recall_at_fpr": -0.08, "precision": -0.12, "amount_recall": -0.07},
+      "affected_segments": {"recent_cohort": -0.17},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.09, "shap_shift": 0.07, "behavior_shift": 0.06, "graph_shift": 0.06, "rule_hit_delta": 0.05, "calibration_shift": 0.05, "traffic_shift": 0.06, "label_maturity": 0.42, "label_maturity_gap": 0.30},
+      "required_actions": ["check_label_maturity"],
+      "forbidden_actions": ["recommend_partial_retraining", "recommend_full_retraining", "update_rule"],
+      "max_tool_cost": 3.5,
+      "expected_gain": 0.0,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "label_delay", "confidence": 0.68, "severity": "medium", "summary": "Drop is concentrated in the recent cohort."},
+        "check_label_maturity": {"cause": "label_delay", "confidence": 0.95, "severity": "high", "summary": "Labels are below the maturity window."}
+      }
+    },
+    {
+      "alert_id": "diag_tool_replay_required_01",
+      "category": "E_AgentToolUse",
+      "difficulty": "tool_validation",
+      "model_name": "fraud_ranker",
+      "model_version": "v66",
+      "root_cause": "threshold_miscalibration",
+      "expected_repair": "threshold_adjustment",
+      "trigger_reason": "Calibration drift suggests a threshold update, but production change must be replayed.",
+      "metric_drop": {"recall_at_fpr": -0.08, "precision": -0.04, "amount_recall": -0.07},
+      "affected_segments": {"all": -0.08},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.08, "shap_shift": 0.20, "behavior_shift": 0.05, "graph_shift": 0.05, "rule_hit_delta": 0.03, "calibration_shift": 0.25, "traffic_shift": 0.05, "label_maturity": 0.84, "label_maturity_gap": 0.01},
+      "required_actions": ["analyze_shap_shift", "adjust_threshold", "run_replay_backtest"],
+      "forbidden_actions": ["recommend_full_retraining"],
+      "max_tool_cost": 4.2,
+      "expected_gain": 0.075,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "threshold_miscalibration", "confidence": 0.66, "severity": "medium", "summary": "Ranking is stable but threshold behavior moved."},
+        "analyze_shap_shift": {"cause": "threshold_miscalibration", "confidence": 0.92, "severity": "high", "summary": "Calibration moved while feature attribution is stable."}
+      }
+    },
+    {
+      "alert_id": "diag_tool_minimal_repair_01",
+      "category": "E_AgentToolUse",
+      "difficulty": "minimal_repair",
+      "model_name": "fraud_ranker",
+      "model_version": "v67",
+      "root_cause": "traffic_segment_shift",
+      "expected_repair": "threshold_adjustment",
+      "trigger_reason": "A narrow partner segment shifted; heavy retraining should be avoided.",
+      "metric_drop": {"recall_at_fpr": -0.06, "precision": -0.08, "amount_recall": -0.05},
+      "affected_segments": {"partner_channel": -0.18},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.11, "shap_shift": 0.08, "behavior_shift": 0.07, "graph_shift": 0.07, "rule_hit_delta": 0.04, "calibration_shift": 0.08, "traffic_shift": 0.27, "label_maturity": 0.84, "label_maturity_gap": 0.01},
+      "required_actions": ["adjust_threshold", "run_replay_backtest"],
+      "forbidden_actions": ["recommend_partial_retraining", "recommend_full_retraining"],
+      "max_tool_cost": 4.0,
+      "expected_gain": 0.065,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "traffic_segment_shift", "confidence": 0.91, "severity": "high", "summary": "A narrow partner segment shifted."}
+      }
+    },
+    {
+      "alert_id": "diag_tool_attack_followup_01",
+      "category": "E_AgentToolUse",
+      "difficulty": "tool_followup",
+      "model_name": "fraud_ranker",
+      "model_version": "v68",
+      "root_cause": "attack_pattern_drift",
+      "expected_repair": "rule_update",
+      "trigger_reason": "Weak first signal requires behavior and graph follow-up before rule update.",
+      "metric_drop": {"recall_at_fpr": -0.16, "precision": -0.04, "amount_recall": -0.17},
+      "affected_segments": {"unknown_cluster": -0.22},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.12, "shap_shift": 0.10, "behavior_shift": 0.22, "graph_shift": 0.24, "rule_hit_delta": 0.04, "calibration_shift": 0.04, "traffic_shift": 0.06, "label_maturity": 0.76, "label_maturity_gap": 0.03},
+      "required_actions": ["analyze_behavior_sequence_shift", "analyze_graph_pattern_shift", "update_rule", "run_replay_backtest"],
+      "forbidden_actions": ["recommend_full_retraining"],
+      "max_tool_cost": 6.4,
+      "expected_gain": 0.13,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "attack_pattern_drift", "confidence": 0.68, "severity": "medium", "summary": "Unknown cluster drives amount loss."},
+        "analyze_behavior_sequence_shift": {"cause": "attack_pattern_drift", "confidence": 0.88, "severity": "high", "summary": "New behavior sequence pattern found."},
+        "analyze_graph_pattern_shift": {"cause": "attack_pattern_drift", "confidence": 0.90, "severity": "high", "summary": "New graph motif confirms adversarial drift."}
+      }
+    },
+    {
+      "alert_id": "diag_tool_no_redundant_heavy_01",
+      "category": "E_AgentToolUse",
+      "difficulty": "budget",
+      "model_name": "fraud_ranker",
+      "model_version": "v69",
+      "root_cause": "rule_interaction_issue",
+      "expected_repair": "rule_update",
+      "trigger_reason": "A routing rule issue is visible from SQL; expensive model refresh should not be called.",
+      "metric_drop": {"recall_at_fpr": -0.11, "precision": -0.08, "amount_recall": -0.10},
+      "affected_segments": {"routing_rule": -0.19},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.09, "shap_shift": 0.08, "behavior_shift": 0.05, "graph_shift": 0.05, "rule_hit_delta": 0.29, "calibration_shift": 0.07, "traffic_shift": 0.08, "label_maturity": 0.82, "label_maturity_gap": 0.02},
+      "required_actions": ["run_sql_profile", "update_rule", "run_replay_backtest"],
+      "forbidden_actions": ["recommend_partial_retraining", "recommend_full_retraining"],
+      "max_tool_cost": 6.3,
+      "expected_gain": 0.09,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "rule_interaction_issue", "confidence": 0.75, "severity": "high", "summary": "Routing-rule segment drives drop."},
+        "run_sql_profile": {"cause": "rule_interaction_issue", "confidence": 0.93, "severity": "high", "summary": "SQL profile confirms routing rule changed scored traffic."}
+      }
+    },
+    {
+      "alert_id": "diag_tool_escalate_unknown_01",
+      "category": "E_AgentToolUse",
+      "difficulty": "unknown",
+      "model_name": "fraud_ranker",
+      "model_version": "v70",
+      "root_cause": "model_capacity_issue",
+      "expected_repair": "full_retraining",
+      "trigger_reason": "Broad degradation requires ruling out cheaper causes before full retraining.",
+      "metric_drop": {"recall_at_fpr": -0.15, "precision": -0.06, "amount_recall": -0.16},
+      "affected_segments": {"all": -0.15},
+      "monitor_alert": {"missing_rate_spike": 0.02, "psi_max": 0.13, "shap_shift": 0.13, "behavior_shift": 0.11, "graph_shift": 0.10, "rule_hit_delta": 0.03, "calibration_shift": 0.06, "traffic_shift": 0.06, "label_maturity": 0.82, "label_maturity_gap": 0.02},
+      "required_actions": ["compute_feature_psi", "analyze_shap_shift", "recommend_full_retraining", "run_replay_backtest"],
+      "forbidden_actions": [],
+      "max_tool_cost": 5.5,
+      "expected_gain": 0.12,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "model_capacity_issue", "confidence": 0.62, "severity": "medium", "summary": "Broad drop across all segments."},
+        "compute_feature_psi": {"cause": "model_capacity_issue", "confidence": 0.70, "severity": "medium", "summary": "No localized feature repair target."},
+        "analyze_shap_shift": {"cause": "model_capacity_issue", "confidence": 0.92, "severity": "high", "summary": "Stale interactions require full model refresh."}
+      }
+    },
+    {
+      "alert_id": "diag_tool_cost_cap_01",
+      "category": "E_AgentToolUse",
+      "difficulty": "budget",
+      "model_name": "fraud_ranker",
+      "model_version": "v71",
+      "root_cause": "feature_distribution_drift",
+      "expected_repair": "partial_retraining",
+      "trigger_reason": "Feature drift is clear; the agent should avoid unnecessary behavior and graph jobs.",
+      "metric_drop": {"recall_at_fpr": -0.11, "precision": -0.04, "amount_recall": -0.12},
+      "affected_segments": {"app_v10": -0.17},
+      "monitor_alert": {"missing_rate_spike": 0.01, "psi_max": 0.26, "shap_shift": 0.21, "behavior_shift": 0.09, "graph_shift": 0.05, "rule_hit_delta": 0.02, "calibration_shift": 0.04, "traffic_shift": 0.06, "label_maturity": 0.80, "label_maturity_gap": 0.02},
+      "required_actions": ["compute_feature_psi", "analyze_shap_shift", "recommend_partial_retraining", "run_replay_backtest"],
+      "forbidden_actions": ["analyze_graph_pattern_shift", "recommend_full_retraining"],
+      "max_tool_cost": 5.2,
+      "expected_gain": 0.10,
+      "tool_findings": {
+        "analyze_segment_drop": {"cause": "feature_distribution_drift", "confidence": 0.70, "severity": "medium", "summary": "App_v10 segment dominates the drop."},
+        "compute_feature_psi": {"cause": "feature_distribution_drift", "confidence": 0.92, "severity": "high", "summary": "Input rhythm PSI is elevated."},
+        "analyze_shap_shift": {"cause": "feature_distribution_drift", "confidence": 0.86, "severity": "high", "summary": "Attribution confirms feature distribution drift."}
+      }
+    }
+  ]
+}
